@@ -29,23 +29,29 @@ def display_overall_analysis():
     st.bar_chart(funding_types)
 
 # Function to display startup details
-def display_startup_details(selected_startup):
-    st.title(f"Details for Startup: {selected_startup}")
+def display_startup_details():
+    st.title("Startup Details")
+    
+    # Select startup from dropdown
+    selected_startup = st.selectbox('Select Startup', startup_data['Startup Name'].unique())
     
     # Filter data for selected startup
     selected_startup_data = startup_data[startup_data['Startup Name'] == selected_startup]
     
     # Display basic information
     st.subheader("Basic Information:")
-    st.write(selected_startup_data.iloc[0][['Startup Name', 'Industry Vertical', 'City', 'Amount']])
-    
+    st.write(selected_startup_data[['Startup Name', 'Industry Vertical', 'City', 'Amount']].iloc[0])
+
     # Display funding rounds
     st.subheader("Funding Rounds:")
     st.write(selected_startup_data[['Date', 'Investment Type', 'Investors Name', 'Amount']])
 
 # Function to display investor details
-def display_investor_details(selected_investor):
-    st.title(f"Details for Investor: {selected_investor}")
+def display_investor_details():
+    st.title("Investor Details")
+    
+    # Select investor from dropdown
+    selected_investor = st.selectbox('Select Investor', startup_data['Investors Name'].unique())
     
     # Filter data for selected investor
     selected_investor_data = startup_data[startup_data['Investors Name'].str.contains(selected_investor, na=False)]
@@ -67,8 +73,6 @@ option = st.sidebar.selectbox('Select Analysis', ['Overall Analysis', 'Startup D
 if option == 'Overall Analysis':
     display_overall_analysis()
 elif option == 'Startup Details':
-    selected_startup = st.sidebar.selectbox('Select Startup', startup_data['Startup Name'].unique())
-    display_startup_details(selected_startup)
+    display_startup_details()
 else:
-    selected_investor = st.sidebar.selectbox('Select Investor', startup_data['Investors Name'].unique())
-    display_investor_details(selected_investor)
+    display_investor_details()
